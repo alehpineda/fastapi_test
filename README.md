@@ -12,3 +12,5 @@ Test fastapi and Docker CI/CD using actions
 ## Link
 
 [FastAPI-Test](https://fastapi-test-00.herokuapp.com/)
+
+[API Docs](https://fastapi-test-00.herokuapp.com/docs)
