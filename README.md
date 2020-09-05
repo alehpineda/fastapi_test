@@ -1,6 +1,13 @@
 # fastapi_test
 
-Test fastapi and docker ci/cd using actions
+Test fastapi and Docker CI/CD using actions
+
+## Workflows
+
+1. Flake8 - Check code quality
+2. Pytest - Run unit tests
+3. Build Docker Image and push to Google Docker Repository
+4. Deploy to Heroku
 
 ## Link
 
