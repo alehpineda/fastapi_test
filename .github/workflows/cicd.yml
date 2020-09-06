@@ -19,24 +19,12 @@ jobs:
         pip install -r requirements.txt
     - name: Lint with flake8
       run: |
-        pip install flake8 flake8-html flake8-json
+        pip install flake8 flake8-html
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         mkdir -p reports/flake8
-        flake8 app/ tests/ --format=json > flake8.json
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --format=html --htmldir=reports/flake8
-    - name: Annotate Checks
-      uses: agyemanjp/ci-checks-action@2.0.2
-      with:
-        ghToken: ${{ secrets.GCR_PASSWORD }}
-        checks: '[
-            {
-              "name": "lint",
-              "fileName": "flake8.json",
-              "prChangesOnly": false
-            }
-          ]'
     - name: Archive flake8 coverage results
       uses: actions/upload-artifact@v1
       with:
@@ -59,13 +47,25 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest
       run: |
-        pip install pytest pytest-cov pytest-html pytest-sugar
+        pip install pytest pytest-cov pytest-html pytest-sugar pytest-json-report
         py.test -v --cov --html=reports/pytest/report.html
+        py.test -v --cov --json-report
     - name: Archive pytest coverage results
       uses: actions/upload-artifact@v1
       with:
         name: pytest-coverage-report
         path: reports/pytest/
+    - name: Annotate Checks
+      uses: agyemanjp/ci-checks-action@2.0.2
+      with:
+        ghToken: ${{ secrets.GCR_PASSWORD }}
+        checks: '[
+            {
+              "name": "unit-tests",
+              "fileName": ".report.json",
+              "prChangesOnly": false
+            }
+          ]'
 
   security_checks:
     needs: pytest
