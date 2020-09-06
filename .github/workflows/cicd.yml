@@ -27,7 +27,7 @@ jobs:
         flake8 app/ tests/ --format=json > flake8.json
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --format=html --htmldir=reports/flake8
     - name: Annotate Checks
-      uses: agyemanjp/ci-checks-action@2.0.1
+      uses: agyemanjp/ci-checks-action@2.0.2
       with:
         ghToken: ${{ secrets.GCR_PASSWORD }}
         checks: '[
