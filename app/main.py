@@ -17,6 +17,11 @@ def read_root():
     return {"Hola": "Mundo"}
 
 
+@app.get("/health")
+def health_check():
+    return {"detail": "ok"}
+
+
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
