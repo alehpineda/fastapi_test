@@ -30,13 +30,7 @@ jobs:
       uses: agyemanjp/ci-checks-action@2.0.1
       with:
         ghToken: ${{ secrets.GCR_PASSWORD }}
-        checks: '[
-            {
-              "name": "flake8",
-              "fileName": "reports/flake8/flake8.json",
-              "prChangesOnly": false
-            }
-          ]'
+        checks: "lint:reports/flake8/flake8.json"
     - name: Archive flake8 coverage results
       uses: actions/upload-artifact@v1
       with:
