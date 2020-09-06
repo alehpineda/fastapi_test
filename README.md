@@ -6,8 +6,9 @@ Test fastapi and Docker CI/CD using actions
 
 1. Flake8 - Check code quality
 2. Pytest - Run unit tests
-3. Build Docker Image and push to Google Docker Repository
-4. Deploy to Heroku
+3. Py Charm Security checks
+4. Build Docker Image and push to Google Docker Repository
+5. Deploy to Heroku
 
 ## Link
 
