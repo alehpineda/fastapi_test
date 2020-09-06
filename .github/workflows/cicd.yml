@@ -80,5 +80,4 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
           healthcheck: "https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/health"
-          checkstring: "ok"
-          delay: 5
+          delay: 10
