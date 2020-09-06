@@ -56,7 +56,7 @@ jobs:
   security_checks:
     needs: pytest
     runs-on: ubuntu-latest
-    name: Execute the pycharm-security action
+    name: Security checks
     steps:
       - uses: actions/checkout@v2
       - name: Run PyCharm Security
