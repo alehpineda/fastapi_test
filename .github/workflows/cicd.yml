@@ -49,23 +49,11 @@ jobs:
       run: |
         pip install pytest pytest-cov pytest-html pytest-sugar pytest-json-report
         py.test -v --cov --html=reports/pytest/report.html
-        py.test -v --cov --json-report
     - name: Archive pytest coverage results
       uses: actions/upload-artifact@v1
       with:
         name: pytest-coverage-report
         path: reports/pytest/
-    - name: Annotate Checks
-      uses: agyemanjp/ci-checks-action@2.0.2
-      with:
-        ghToken: ${{ secrets.GCR_PASSWORD }}
-        checks: '[
-            {
-              "name": "unit-tests",
-              "fileName": ".report.json",
-              "prChangesOnly": false
-            }
-          ]'
 
   security_checks:
     needs: pytest
