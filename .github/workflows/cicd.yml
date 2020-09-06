@@ -50,8 +50,6 @@ jobs:
     - name: Archive pytest coverage results
       uses: actions/upload-artifact@v1
       with:
-        os: ubuntu-latest
-        python-version: 3.8
         name: pytest-coverage-report
         path: reports/pytest/
 
@@ -81,3 +79,6 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} #Must be unique in Heroku
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
+          healthcheck: "https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/health"
+          checkstring: "ok"
+          delay: 5
