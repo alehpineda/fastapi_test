@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
 
   flake8:
+    name: Code Quality
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -18,12 +19,24 @@ jobs:
         pip install -r requirements.txt
     - name: Lint with flake8
       run: |
-        pip install flake8 flake8-html
+        pip install flake8 flake8-html flake8-json
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         mkdir -p reports/flake8
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --format=html > reports/flake8/flake8.json
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --format=html --htmldir=reports/flake8
+    - name: Annotate Checks
+      uses: agyemanjp/ci-checks-action@2.0.1
+      with:
+        ghToken: ${{ secrets.GCR_PASSWORD }}
+        checks: '[
+            {
+              "name": "flake8",
+              "fileName": "reports/flake8/flake8.json",
+              "prChangesOnly": false
+            }
+          ]'
     - name: Archive flake8 coverage results
       uses: actions/upload-artifact@v1
       with:
@@ -31,6 +44,7 @@ jobs:
         path: reports/flake8/
 
   pytest:
+    name: Unit Testing
     needs: flake8
     runs-on: ubuntu-latest
     steps:
@@ -56,7 +70,7 @@ jobs:
   security_checks:
     needs: pytest
     runs-on: ubuntu-latest
-    name: Security checks
+    name: Security check
     steps:
       - uses: actions/checkout@v2
       - name: Run PyCharm Security
@@ -65,6 +79,7 @@ jobs:
           path: app/
 
   docker_cicd:
+    name: Build Image
     needs: security_checks
     runs-on: ubuntu-latest
     steps:
@@ -80,6 +95,7 @@ jobs:
           tags: latest
 
   heroku_deploy:
+    name: Deploy Image
     needs: docker_cicd
     runs-on: ubuntu-latest
     steps:
